@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>form</title>
+    <link rel="stylesheet" href="index.css">
+</head>
+<body>
+  
+ <div class="contact-form">
+    <h2>contact</h2>
+    <form>
+        <div class="form-group">
+            <label for="name">Name</label>
+            <input class="my" type="text"    id="name" placeholder="first name" required>
+        </div>
+
+        <div class="form-group">
+            <label for="email">Email</label>
+            <input class="my" type="email" id="email" placeholder="email" required>
+        </div>
+
+        <div class="form-group">
+            <label for="contact">contact number</label>
+            <input class="my" type="tel" id="contact" placeholder="contact number" required>
+        </div>
+
+        <div class="form-group">
+            <label for="message">Message</label>
+            <input class="my" type="text" id="message" placeholder="message" required>
+        </div>
+
+        <div class="your">
+            <label>🔃</label>
+            <input class="my" type="text" id="captcha" placeholder="captcha text" required>
+
+        </div>
+
+        <button type="submit" class="submit-btn">Submit form</button>
+    </form>
+
+ </div>
+ 
+    
+</body>
+<script>
+    const form = document.querySelector('form');
+    const nameInput = document.getElementById('name');
+    const emailInput = document.getElementById('email');
+    const contactInput = document.getElementById('contact');
+    const messageInput = document.getElementById('message');
+    const captchaInput = document.getElementById('captcha');
+
+    form.addEventListener('submit', (event) => {
+        event.preventDefault();
+        const name = nameInput.value;
+        const email = emailInput.value;
+        const contact = contactInput.value;
+        const message = messageInput.value;
+        const captcha = captchaInput.value;
+        // alert(`Name: ${name}\nEmail: ${email}\nContact: ${contact}\nMessage: ${message}\nCaptcha: ${captcha}`);
+    });
+    const seterror = (element, message) => {
+        const inputControl = element.parentElement;
+        const errorDisplay = inputControl.querySelector('.error');
+        errorDisplay.innerText = message;
+        inputControl.classList.add('error');
+        inputControl.classList.remove('success');
+    }
+    const setsuccess = element => {
+        const inputControl = element.parentElement;
+        const errorDisplay = inputControl.querySelector('.error');
+        errorDisplay.innerText = '';
+        inputControl.classList.add('success');
+        inputControl.classList.remove('error');
+    }
+    const isValidEmail = email => {
+        const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        return re.test(String(email).toLowerCase());
+    }
+    form.addEventListener('submit', e => {
+        e.preventDefault();
+        if (nameInput.value === '') {
+            seterror(nameInput, 'Name is required');
+        } else {
+            setsuccess(nameInput);
+        }
+        if (emailInput.value === '') {
+            seterror(emailInput, 'Email is required');
+        } else if (!isValidEmail(emailInput.value)) {
+            seterror(emailInput, 'Provide a valid email address');
+        } else {
+            setsuccess(emailInput);
+        }
+        if (contactInput.value === '') {
+            seterror(contactInput, 'Contact is required');
+        } else {
+            setsuccess(contactInput);
+        }
+        if (messageInput.value === '') {
+            seterror(messageInput, 'Message cannot be blank');
+        } else {
+            setsuccess(messageInput);
+        }
+        if (captchaInput.value === '') {
+            seterror(captchaInput, 'Captcha cannot be blank');
+        } else {
+            setsuccess(captchaInput);
+        }
+    }); 
+    const generateCaptcha = () => {
+            const digits = '0123456789';
+            let code = '';
+            for (let i = 0; i < 6; i++) {
+                code += digits[Math.floor(Math.random() * 10)]; 
+            }
+            document.getElementById('captcha').value = code;    
+        }
+    generateCaptcha();
+    const refresh = () => {
+        location.reload();
+    }
+    document.getElementById('refresh').addEventListener('click', refresh);
+    
+
+</script>
+
+</html>
